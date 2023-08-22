@@ -14,6 +14,7 @@ public class Enemy : EnemyBase
     private GameObject rotateObject;
     private Renderer myRenderer;
     private Color baseColor;
+
     private void Awake()
     {
         _enemySpawnManager = FindObjectOfType<EnemySpawnManager>();
@@ -49,9 +50,9 @@ public class Enemy : EnemyBase
         direction = new Vector3(direction.x, transform.position.y, direction.z);
         GetComponent<Collider>().isTrigger = false;
         _meshAgent.enabled = false;
-        transform.DOPunchScale(new Vector3(.1f,.3f,.1f), .2f);
+        transform.DOPunchScale(new Vector3(.1f, .3f, .1f), .2f);
         HitMaterial();
-        transform.DOMove(transform.position+direction, 1).SetEase(Ease.OutQuad).OnComplete(() =>
+        transform.DOMove(transform.position + direction, 1).SetEase(Ease.OutQuad).OnComplete(() =>
         {
             CancelInvoke("SkillBackHitDisable");
             Invoke("SkillBackHitDisable", .1f);
@@ -64,7 +65,7 @@ public class Enemy : EnemyBase
         _meshAgent.enabled = true;
         GetComponent<Collider>().isTrigger = true;
     }
-    
+
     public void HitMaterial()
     {
         //characterModel.transform.DOKill();
@@ -87,10 +88,27 @@ public class Enemy : EnemyBase
 
     public override void Live()
     {
-        transform.position =
-            _playerMovement.transform.position + new Vector3(0, 0, Random.Range(-10, 10));
+        RandomPos();
         _meshAgent.enabled = true;
         isDead = false;
+    }
+
+    public void RandomPos()
+    {
+        float radius = 20f;
+        Vector3 randomPos = Random.insideUnitSphere * radius;
+        randomPos += _playerMovement.transform.position;
+        randomPos.y = 0f;
+
+        Vector3 direction = randomPos - _playerMovement.transform.position;
+        direction.Normalize();
+
+        float dotProduct = Vector3.Dot(transform.forward, direction);
+        float dotProductAngle = Mathf.Acos(dotProduct / transform.forward.magnitude * direction.magnitude);
+
+        randomPos.x = Mathf.Cos(dotProductAngle) * radius + _playerMovement.transform.position.x;
+        randomPos.z = Mathf.Sin(dotProductAngle * (Random.value > 0.5f ? 1f : -1f)) * radius + _playerMovement.transform.position.z;
+        transform.position = randomPos;
     }
 
     #endregion

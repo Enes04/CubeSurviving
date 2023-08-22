@@ -62,7 +62,7 @@ public class EnemySpawnManager : MonoBehaviour
 
     public void EnemySpawnScene()
     {
-        if (liveSceneEnemy<4)
+        if (liveSceneEnemy<10)
         {
             CallEnemy();
         }
