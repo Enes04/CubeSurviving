@@ -4,8 +4,8 @@ using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
-{
-
+{ 
+    public WaitSkillTime[] waitSkillTimes;
     public GameObject bulletPrefab;
     public GameObject bulletParent;
     public GameObject[] crsytal;
@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject crsytalMainParent;
     private void Awake()
     {
+        waitSkillTimes = FindObjectsOfType<WaitSkillTime>();
         for (int i = 0; i < 80; i++)
         {
             GameObject current = Instantiate(crsytal[Random.Range(0, 2)],crsytalMainParent.transform);

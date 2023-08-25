@@ -3,16 +3,27 @@ using UnityEngine;
 
 public class GunManager : MonoBehaviour
 {
+    public Skills currentSkill;
     public GameObject muzzle;
     private List<GameObject> bullet;
     private GameManager _gameManager;
     public float rateOfFire;
     private float currentTime;
+    
+    private WaitSkillTime currentSkillTimeCoolDown;
+    
     private void Start()
     {
+      
         _gameManager = FindObjectOfType<GameManager>();
         bullet = new List<GameObject>();
         BulletPoolStart();
+        
+        for (int i = 0; i < _gameManager.waitSkillTimes.Length; i++)
+        {
+            if (currentSkill == _gameManager.waitSkillTimes[i].mySkill)
+                currentSkillTimeCoolDown = _gameManager.waitSkillTimes[i];
+        }
     }
 
     public void BulletPoolStart()
@@ -33,6 +44,7 @@ public class GunManager : MonoBehaviour
             currentTime += Time.deltaTime;
             if (rateOfFire < currentTime)
             {
+                currentSkillTimeCoolDown.StartCoolDown(rateOfFire);
                 currentTime = 0;
                 FireShoot();
             }

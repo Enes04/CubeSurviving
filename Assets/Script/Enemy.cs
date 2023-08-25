@@ -53,7 +53,7 @@ namespace Script
         {
             isHit = true;
             Vector3 direction = (transform.position - _playerMovement.transform.position).normalized * backHitforce;
-            direction = new Vector3(direction.x, transform.position.y, direction.z);
+            direction = new Vector3(direction.x, 0, direction.z);
             GetComponent<Collider>().isTrigger = false;
             _meshAgent.enabled = false;
             transform.DOKill();
