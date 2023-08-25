@@ -15,7 +15,7 @@ namespace Script
         {
             if (other.CompareTag("Skill"))
             { 
-                _enemy.Damage(3,other.gameObject);
+                _enemy.Hit(50,other.gameObject,10);
             }
         }
     }

@@ -18,13 +18,17 @@ public class Bullet : MonoBehaviour
             transform.Translate(Vector3.forward * speed*Time.deltaTime);
             if (Vector3.Distance(_gunManager.transform.position, transform.position) > 100)
             {
-                _fire = false;
-                _gunManager.BulletPoolAdd(gameObject);
-                gameObject.SetActive(false);
+                DestroyBullet();
             }
         }
     }
-    
+
+    public void DestroyBullet()
+    {
+        _fire = false;
+        _gunManager.BulletPoolAdd(gameObject);
+        gameObject.SetActive(false);
+    }
     public void Shot()
     {
         _fire = true;

@@ -1,10 +1,14 @@
+using Script;
 using UnityEngine;
 
 public class BulletRaycast : MonoBehaviour
 {
-   
+    private Bullet _bullet;
+    private void Awake()
+    {
+        _bullet = GetComponentInParent<Bullet>();
+    }
 
-    // Update is called once per frame
     void Update()
     {
         RaycastHit objectHit;
@@ -14,7 +18,8 @@ public class BulletRaycast : MonoBehaviour
         {
             if (objectHit.collider.CompareTag("Enemy"))
             {
-                objectHit.transform.GetComponent<Enemy>().Damage(3,objectHit.transform.gameObject);
+                objectHit.transform.GetComponent<Enemy>().Hit(10,transform.gameObject,5);
+                _bullet.DestroyBullet();
             }
         }
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Script;
 using UnityEngine;
 
 public class EnemySpawnManager : MonoBehaviour
@@ -29,7 +30,6 @@ public class EnemySpawnManager : MonoBehaviour
         for (int i = 0; i < index; i++)
         {
             GameObject currentEnemy = Instantiate(enemyPrefab);
-            _enemyPool.Add(currentEnemy);
             currentEnemy.SetActive(false);
         }
     }
