@@ -105,6 +105,6 @@ public class PlayerMovement : MonoBehaviour
     public void DashPlayer()
     {
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        transform.DOMove(transform.position+(move * 50), .5f).SetEase(Ease.Linear).OnComplete((() => dash = false));
+        transform.DOMove(transform.position+(move * 25), .1f).SetEase(Ease.Linear).OnComplete((() => dash = false));
     }
 }

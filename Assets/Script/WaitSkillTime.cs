@@ -5,7 +5,8 @@ using UnityEngine.UI;
 public enum Skills
 {
     singleFireShoot,
-    dash
+    dash,
+    tornado
 }
 public class WaitSkillTime : MonoBehaviour
 {
