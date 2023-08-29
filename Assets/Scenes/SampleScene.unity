@@ -1012,6 +1012,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 848fa759b9145764d8a5a8fbf331237c, type: 3}
+--- !u!1 &531690648 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1657261246295108, guid: 848fa759b9145764d8a5a8fbf331237c,
+    type: 3}
+  m_PrefabInstance: {fileID: 531690647}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &531690649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531690648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bcdb5948091fba4b848a891011fe074, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tornadoImage: {fileID: 1213114344}
+  cooldown: 5
+  tornadoObj: {fileID: 503395396}
 --- !u!1 &658825887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,6 +1191,9 @@ GameObject:
   - component: {fileID: 775920737}
   - component: {fileID: 775920738}
   - component: {fileID: 775920739}
+  - component: {fileID: 775920740}
+  - component: {fileID: 775920741}
+  - component: {fileID: 775920742}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1210,14 +1234,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc7e122f7490e4747b84a97686d61b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dastCoolDown: 4
-  currentDashTime: 0
-  currentSkill: 1
   groundedPlayer: 0
   playerSpeed: 25
   layerMask:
     serializedVersion: 2
     m_Bits: 64
+  dash: 0
 --- !u!114 &775920738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1230,12 +1252,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e2b482789094434fb8cee9bc4dda612, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentSkill: 0000000002000000
   muzzle: {fileID: 961495190}
-  tornado: {fileID: 503395396}
-  rateOfFire:
-  - 0.4
-  - 2
+  bullet: []
 --- !u!143 &775920739
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1254,6 +1272,46 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.44, z: 0}
+--- !u!114 &775920740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775920735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3902576201fc4714a9f3d8f6e978e6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &775920741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775920735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98c1845153143a0419133e68c5e66406, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillImage: {fileID: 1782948838}
+  cooldown: 0.2
+--- !u!114 &775920742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775920735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d6d7e98e6d274e41886c80941ad40e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillImage: {fileID: 1573738730}
+  cooldown: 5
 --- !u!1 &831697249
 GameObject:
   m_ObjectHideFlags: 0
@@ -1768,7 +1826,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1213114341}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed285d6d3c4fb4840897282face49601, type: 3}
   m_Name: 
@@ -1801,7 +1859,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -2636,7 +2694,7 @@ GameObject:
   - component: {fileID: 1695070362}
   - component: {fileID: 1695070361}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Dash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2920,7 +2978,7 @@ GameObject:
   - component: {fileID: 1786030879}
   - component: {fileID: 1786030878}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Basic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3115,7 +3173,7 @@ GameObject:
   - component: {fileID: 1931404916}
   - component: {fileID: 1931404915}
   m_Layer: 5
-  m_Name: Image (2)
+  m_Name: Tornado
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
