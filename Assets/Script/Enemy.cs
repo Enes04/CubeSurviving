@@ -16,7 +16,13 @@ namespace Script
         private Renderer myRenderer;
         private Color baseColor;
         private ParticleManager _particleManager;
-
+        
+        //------Tornado-------//
+        private bool _tornadoBool;
+        private GameObject _tornadoObj;
+        private float _rotationSpeed;
+        
+        
         private void Awake()
         {
             _particleManager = FindObjectOfType<ParticleManager>();
@@ -26,6 +32,7 @@ namespace Script
             _meshAgent = GetComponent<NavMeshAgent>();
             myRenderer = transform.GetChild(0).GetComponent<Renderer>();
             baseColor = myRenderer.material.color;
+            _rotationSpeed = Random.Range(100, 500);
         }
 
 
@@ -35,12 +42,17 @@ namespace Script
             {
                 _meshAgent.SetDestination(_playerMovement.transform.position);
             }
+
+            if (_tornadoBool && _tornadoObj!=null)
+            {
+                transform.RotateAround(_tornadoObj.transform.position,new Vector3(0,1,0),_rotationSpeed*Time.deltaTime);
+            }
         }
 
-        public void Hit(int _damage, GameObject hitObj,int backhitForce)
+        public void Hit(int _damage, GameObject hitObj, int backhitForce)
         {
             Damage(_damage);
-            BackHitAnim(hitObj,backhitForce);
+            BackHitAnim(hitObj, backhitForce);
             ShowDamageText(_damage);
             if (health <= 0)
                 Dead();
@@ -49,21 +61,24 @@ namespace Script
 
         #region BackHitAnimation
 
-        public void BackHitAnim(GameObject obj,int backHitforce)
+        public void BackHitAnim(GameObject obj, int backHitforce)
         {
-            isHit = true;
-            Vector3 direction = (transform.position - _playerMovement.transform.position).normalized * backHitforce;
-            direction = new Vector3(direction.x, 0, direction.z);
-            GetComponent<Collider>().isTrigger = false;
-            _meshAgent.enabled = false;
-            transform.DOKill();
-            transform.DOPunchScale(new Vector3(.1f, .3f, .1f), .2f);
-            HitMaterial();
-            transform.DOMove(transform.position + direction, 1).SetEase(Ease.OutQuad).OnComplete(() =>
+            if (!_tornadoBool)
             {
-                CancelInvoke("SkillBackHitDisable");
-                Invoke("SkillBackHitDisable", .1f);
-            });
+                isHit = true;
+                Vector3 direction = (transform.position - _playerMovement.transform.position).normalized * backHitforce;
+                direction = new Vector3(direction.x, 0, direction.z);
+                GetComponent<Collider>().isTrigger = false;
+                _meshAgent.enabled = false;
+                transform.DOKill();
+                transform.DOPunchScale(new Vector3(.1f, .3f, .1f), .2f);
+                HitMaterial();
+                transform.DOMove(transform.position + direction, 1).SetEase(Ease.OutQuad).OnComplete(() =>
+                {
+                    CancelInvoke("SkillBackHitDisable");
+                    Invoke("SkillBackHitDisable", .1f);
+                });
+            }
         }
 
         public void SkillBackHitDisable()
@@ -88,9 +103,10 @@ namespace Script
 
         public override void Dead()
         {
+            transform.DOKill();
             ParticleSystem currentDeadParticle = Instantiate(_particleManager.deadParticle);
             currentDeadParticle.transform.position =
-                new Vector3(transform.position.x, transform.position.y+2, transform.position.z);
+                new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
             currentDeadParticle.Play();
             gameObject.SetActive(false);
             _meshAgent.enabled = false;
@@ -147,6 +163,30 @@ namespace Script
             DamageNumber newDamageNumber =
                 prefab.Spawn(new Vector3(transform.position.x, transform.position.y, transform.position.z),
                     damage);
+        }
+
+        #endregion
+
+        #region Tornado
+
+        public void TornadoScript(GameObject tornadoObj)
+        {
+            _tornadoObj = tornadoObj;
+            isDead = true;
+            _meshAgent.enabled = false;
+            _tornadoBool = true;
+            transform.DOLocalMoveZ(5, Random.Range(5f,15f)).OnComplete(() =>
+            {
+                TornadoClear();
+                Dead();
+            });
+        }
+
+        public void TornadoClear()
+        {
+            _tornadoBool = false;
+            _tornadoObj = null;
+            transform.SetParent(null);
         }
 
         #endregion

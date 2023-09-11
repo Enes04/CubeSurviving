@@ -6,7 +6,8 @@ public enum Skills
 {
     singleFireShoot,
     dash,
-    tornado
+    tornado,
+    earthquake
 }
 public class WaitSkillTime : MonoBehaviour
 {

@@ -12,7 +12,7 @@ public class EnemySpawnManager : MonoBehaviour
     public int liveSceneEnemy;
     private float currentTime;
     public float delayTime;
-
+    public int liveEnemyCurrentStage;
   
     private void Awake()
     {
@@ -62,7 +62,7 @@ public class EnemySpawnManager : MonoBehaviour
 
     public void EnemySpawnScene()
     {
-        if (liveSceneEnemy<10)
+        if (liveSceneEnemy<liveEnemyCurrentStage)
         {
             CallEnemy();
         }
